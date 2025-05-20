@@ -11214,6 +11214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Quest: {fileID: 1005381308}
   animator: {fileID: 1054211943}
+  Transition: {fileID: 2135081667}
   rb: {fileID: 1054211947}
   boxCollider: {fileID: 1054211948}
 --- !u!61 &1449966192
@@ -17531,6 +17532,11 @@ Transform:
   - {fileID: 1558743437}
   m_Father: {fileID: 552765100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2135081667 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8376651221663624663, guid: 297bcf8f80189fc479d2a319b19a3513, type: 3}
+  m_PrefabInstance: {fileID: 351045082}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2141766516
 GameObject:
   m_ObjectHideFlags: 0

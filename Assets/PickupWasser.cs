@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 public class PickupWasser : MonoBehaviour
 {
     [SerializeField] BucketPickUp bucketPickUp;
-    public GameObject water;
+
+    public Animator anim;
+    public Animator Transition;
 
     void Start()
     {
@@ -16,21 +18,32 @@ public class PickupWasser : MonoBehaviour
     
     void Update()
     {
-        if (bucketPickUp == false && Input.GetKey(KeyCode.E))
-        {
-            return;
-        }
 
-        else if (bucketPickUp == true && Input.GetKey(KeyCode.E))
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
         {
-            water.SetActive(false);
-            StartCoroutine(DelaySceneChange());
+            if (bucketPickUp != null && bucketPickUp.isBucketPickedUp == false && Input.GetKey(KeyCode.E))
+            {
+                return;
+            }
+
+            else if (bucketPickUp != null && bucketPickUp.isBucketPickedUp == true && Input.GetKey(KeyCode.E))
+            {
+                anim.SetTrigger("Fade");
+                StartCoroutine(DelaySceneChange());
+            }
         }
     }
 
     IEnumerator DelaySceneChange()
     {
         yield return new WaitForSeconds(1.5f);
+        Transition.SetTrigger("Start");
+
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene("Act3");
     }
 }

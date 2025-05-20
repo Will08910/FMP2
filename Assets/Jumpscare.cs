@@ -10,6 +10,7 @@ public class Jumpscare : MonoBehaviour
     public GameObject StamBar;
     public GameObject Cam1;
     public GameObject Cam2;
+    public GameObject Canvas;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,6 +19,7 @@ public class Jumpscare : MonoBehaviour
             StamBar.SetActive(false);
             Cam1.SetActive(false);
             Cam2.SetActive(true);
+            Canvas.SetActive(false);
 
             BlackScreenFlicker.SetTrigger("Jumpscare");
             ScreenShake.SetTrigger("Jumpscare");

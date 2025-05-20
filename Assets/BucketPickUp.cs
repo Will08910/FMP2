@@ -5,8 +5,13 @@ using System.Collections.Generic;
 public class BucketPickUp : MonoBehaviour
 {
     public GameObject Bucket;
-    [SerializeField] private bool isBucketPickedUp;
+    public GameObject UIStuff1;
+
+    [SerializeField] public bool isBucketPickedUp;
+
     public Animator anim;
+    public Animator UIanim;
+    public Animator UIanim2;
 
     private void Start()
     {
@@ -19,20 +24,41 @@ public class BucketPickUp : MonoBehaviour
         if (isBucketPickedUp == true)
         {
             anim.SetTrigger("BucketPickedUp");
+            StartCoroutine(Delay());
+            UIanim.SetTrigger("Ob2Activate");
         }
     }
 
-    void OnTriggerStay()
+    void OnTriggerStay(Collider other)
     {
-        if (Input.GetKey(KeyCode.E))
+        if (other.CompareTag("Player"))
         {
-            isBucketPickedUp = true;
+            UIanim2.SetBool("EToInteract", true);
+
+            if (Input.GetKey(KeyCode.E))
+             {
+                 isBucketPickedUp = true;
+             }
+
+             
+
         }
+       
     }
 
-    public bool IsBucketPickedUp()
+    void OnTriggerExit(Collider other)
     {
-        return isBucketPickedUp;
+        if (other.CompareTag("Player"))
+        {
+            UIanim2.SetBool("EToInteract", false);
+        }
+        
+    }
+
+    private IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(1);
+        UIStuff1.SetActive(false);
     }
 
 }

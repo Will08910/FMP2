@@ -14,7 +14,7 @@ public class SpriteMovement : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.None;
         Player.transform.position = new Vector3(-4.24f, 1f, 0f);
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();

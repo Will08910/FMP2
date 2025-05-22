@@ -23,7 +23,8 @@ public class QuestGiver : MonoBehaviour
 
     public float wordSpeed;
 
-    private bool isTyping = false; // Flag to check if typing is in progress
+    private bool isTyping = false;
+    private Coroutine typingCoroutine;  
 
     private void Start()
     {
@@ -32,37 +33,34 @@ public class QuestGiver : MonoBehaviour
         Image.SetActive(false);
         QuestRecieved = false;
         Canvas1.SetActive(false);
-        dialoguePanel.SetActive(false); // Ensure the dialogue panel is hidden initially
-        index = 0; // Reset the dialogue index at the start
+        dialoguePanel.SetActive(false);
+        index = 0;
     }
 
     void Update()
     {
-        
         if (!dialoguePanel.activeInHierarchy)
         {
-            Image.SetActive(false); 
+            Image.SetActive(false);
         }
 
-        // Activate quest on 'E' press while in the trigger area
-        if (Input.GetKeyDown(KeyCode.E) && playerIsClose == true)
+        
+        if (Input.GetKeyDown(KeyCode.E) && playerIsClose && !dialoguePanel.activeInHierarchy)
         {
-            if (dialoguePanel.activeInHierarchy)
+            dialoguePanel.SetActive(true);
+            index = 0;  
+
+            if (typingCoroutine != null)
             {
-                zeroText();
+                StopCoroutine(typingCoroutine);  
             }
 
-            else
-            {
-                dialoguePanel.SetActive(true);
-                StartCoroutine(Typing());
-                Image.SetActive(true);
-                QuestRecieved = true;
-            }
-            
+            dialogueText.text = ""; 
+            typingCoroutine = StartCoroutine(Typing());  
+            Image.SetActive(true);
+            QuestRecieved = true;
         }
 
-        // Manage visibility of Canvas2
         if (dialoguePanel.activeSelf)
         {
             Canvas1.SetActive(false);
@@ -73,14 +71,14 @@ public class QuestGiver : MonoBehaviour
         {
             contButton.SetActive(true);
         }
-
     }
 
     public void zeroText()
     {
-        dialogueText.text = "";
-        index = 0;
-        dialoguePanel.SetActive(false);
+        dialogueText.text = ""; 
+        index = 0;  
+        dialoguePanel.SetActive(false);  
+        contButton.SetActive(false);  
     }
 
     IEnumerator Typing()
@@ -88,29 +86,25 @@ public class QuestGiver : MonoBehaviour
         foreach (char letter in dialogue[index].ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(wordSpeed); 
+            yield return new WaitForSeconds(wordSpeed);
         }
     }
 
     public void NextLine()
     {
-
         contButton.SetActive(false);
 
         if (index < dialogue.Length - 1)
         {
-            index++;
-            dialogueText.text = "";
-            StartCoroutine(Typing());
+            index++;  
+            dialogueText.text = "";  
+            typingCoroutine = StartCoroutine(Typing());  
         }
-        
         else
         {
-            zeroText();
+            zeroText();  
         }
     }
-
-
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -132,7 +126,6 @@ public class QuestGiver : MonoBehaviour
         }
     }
 
-
     IEnumerator FadeTextToFullAlpha()
     {
         if (Canvas1.active)
@@ -152,7 +145,6 @@ public class QuestGiver : MonoBehaviour
         }
     }
 
-
     IEnumerator FadeTextToZeroAlpha()
     {
         float elapsedTime = 0f;
@@ -170,4 +162,6 @@ public class QuestGiver : MonoBehaviour
 
         Canvas1.SetActive(false);
     }
+
+
 }
